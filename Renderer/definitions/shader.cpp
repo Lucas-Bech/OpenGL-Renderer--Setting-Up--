@@ -8,35 +8,20 @@
 #include <glew.h>  // Cross-platform querying and loading of OpenGL extensions
 #include <glfw3.h> // Cross-platform window creation
 
+#include <renderer.h>
+
 #define ASSERT(x) if (!(x)) __debugbreak();
 #define GLCall(x)\
 	glClearErrors();\
 	x;\
 	ASSERT(glCheckError(#x, __FILE__, __LINE__));
 
-static void glClearErrors()
-{
-	while (glGetError() != GL_NO_ERROR);
-}
-
-static bool glCheckError(const char* function, const char* file, int line)
-{
-	while (GLenum error = glGetError())
-	{
-		std::cout << "[OpenGL Error] " << error
-			<< "\nFunction: " << function
-			<< "\nFile: " << file
-			<< "\nLine: " << line
-			<< std::endl;
-		return false;
-	}
-	return true;
-}
-
 Shader::Shader(const std::string& filepath)
 {
 	m_filePath = filepath;
 	ParseShader();
+	std::cout << "\nVertex Shader:\n" << Vertex << "\n\n"
+		<< "Fragment Shader:\n" << Fragment << "\n\n";
 }
 
 Shader::~Shader()

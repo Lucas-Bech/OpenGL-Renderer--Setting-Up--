@@ -7,32 +7,10 @@
 #include <glew.h>  // Cross-platform querying and loading of OpenGL extensions
 #include <glfw3.h> // Cross-platform window creation
 
+#include <renderer.h>
+#include <indexBuffer.h>
+#include <vertexBuffer.h>
 #include <shader.h>
-
-#define ASSERT(x) if (!(x)) __debugbreak();
-#define GLCall(x)\
-	glClearErrors();\
-	x;\
-	ASSERT(glCheckError(#x, __FILE__, __LINE__));
-
-static void glClearErrors()
-{
-	while (glGetError() != GL_NO_ERROR);
-}
-
-static bool glCheckError(const char* function, const char* file, int line)
-{
-	while (GLenum error = glGetError())
-	{
-		std::cout << "[OpenGL Error] " << error
-				  << "\nFunction: "	   << function
-				  << "\nFile: "		   << file
-				  << "\nLine: "		   << line
-				  << std::endl;
-		return false;
-	}
-	return true;
-}
 
 int main(void)
 {
@@ -66,18 +44,17 @@ int main(void)
 		2, 3, 0
 	};
 
-	unsigned int vbo;
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, (sizeof(positions) / sizeof(*positions)) * sizeof(float), positions, GL_STATIC_DRAW);
+	Renderer renderer;
 
+	unsigned int vao;
+	glCall(glGenVertexArrays(1, &vao));
+	glCall(glBindVertexArray(vao));
+
+	VertexBuffer vbo(sizeof(positions), positions);
+	IndexBuffer ibo(indices, 6);
+	
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
 	glEnableVertexAttribArray(0);
-
-	unsigned int ibo;
-	glGenBuffers(1, &ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, (sizeof(indices) / sizeof(*indices)) * sizeof(float), indices, GL_STATIC_DRAW);
 
 	Shader shader("res/shaders/red.shader");
 	unsigned int shaderProgram = shader.CreateShader();
@@ -87,7 +64,7 @@ int main(void)
 	while (!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
-		GLCall(glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(*indices), GL_UNSIGNED_INT, nullptr));
+		glCall(glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(*indices), GL_UNSIGNED_INT, nullptr));
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

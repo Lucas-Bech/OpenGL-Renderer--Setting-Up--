@@ -13,17 +13,38 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Definitions">
+      <UniqueIdentifier>{388a4216-bb7b-45d4-b668-11431d445b5b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="definitions\renderer.cpp">
+      <Filter>Definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="definitions\shader.cpp">
+      <Filter>Definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="definitions\vertexBuffer.cpp">
+      <Filter>Definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="definitions\indexBuffer.cpp">
+      <Filter>Definitions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\vertexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\indexBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

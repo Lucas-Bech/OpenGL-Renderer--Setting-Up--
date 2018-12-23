@@ -135,11 +135,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="definitions\indexBuffer.cpp" />
+    <ClCompile Include="definitions\renderer.cpp" />
+    <ClCompile Include="definitions\shader.cpp" />
+    <ClCompile Include="definitions\vertexBuffer.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="headers\indexBuffer.h" />
+    <ClInclude Include="headers\renderer.h" />
     <ClInclude Include="headers\shader.h" />
+    <ClInclude Include="headers\vertexBuffer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
