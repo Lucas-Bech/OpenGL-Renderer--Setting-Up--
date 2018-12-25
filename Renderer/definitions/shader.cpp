@@ -10,18 +10,12 @@
 
 #include <renderer.h>
 
-#define ASSERT(x) if (!(x)) __debugbreak();
-#define GLCall(x)\
-	glClearErrors();\
-	x;\
-	ASSERT(glCheckError(#x, __FILE__, __LINE__));
-
 Shader::Shader(const std::string& filepath)
 {
 	m_filePath = filepath;
 	ParseShader();
-	std::cout << "\nVertex Shader:\n" << Vertex << "\n\n"
-		<< "Fragment Shader:\n" << Fragment << "\n\n";
+	std::cout << "\nVertex Shader:\n" << m_vertex << "\n\n"
+		<< "Fragment Shader:\n" << m_vertex << "\n\n";
 }
 
 Shader::~Shader()
@@ -57,31 +51,32 @@ void Shader::ParseShader()
 			ss[(int)type] << line << '\n';
 		}
 	}
-	Vertex = ss[(int)ShaderType::VERTEX].str();
-	Fragment = ss[(int)ShaderType::FRAGMENT].str();
+	m_vertex = ss[(int)ShaderType::VERTEX].str();
+	m_fragment = ss[(int)ShaderType::FRAGMENT].str();
 }
 
-void Shader::Bind() const
+void Shader::setUniformLocation(const unsigned int& shaderProgram, const char* uniformName)
 {
-
+	glCall(m_uniformLocation = glGetUniformLocation(shaderProgram, "u_Color"));
+	ASSERT(m_uniformLocation != -1);
 }
 
-void Shader::Unbind() const
+void Shader::setUniform(const float RGBA[4])
 {
-
+	glCall(glUniform4f(m_uniformLocation, RGBA[0], RGBA[1], RGBA[2], RGBA[3]));
 }
 
 unsigned int Shader::CreateShader()
 {
 	unsigned int program = glCreateProgram();
 
-	unsigned int vs = CompileShader(GL_VERTEX_SHADER, Vertex);
-	unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, Fragment);
+	unsigned int vs = CompileShader(GL_VERTEX_SHADER, m_vertex);
+	unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, m_fragment);
 
-	GLCall(glAttachShader(program, vs));
-	GLCall(glAttachShader(program, fs));
-	GLCall(glLinkProgram(program));
-	GLCall(glValidateProgram(program));
+	glCall(glAttachShader(program, vs));
+	glCall(glAttachShader(program, fs));
+	glCall(glLinkProgram(program));
+	glCall(glValidateProgram(program));
 
 	// Clean-up
 	glDeleteShader(vs);
@@ -90,12 +85,12 @@ unsigned int Shader::CreateShader()
 	return program;
 }
 
-unsigned Shader::CompileShader(unsigned int type, const std::string& source)
+unsigned int Shader::CompileShader(unsigned int type, const std::string& source)
 {
 	unsigned int shaderID = glCreateShader(type);
 	const char* shaderSrc = source.c_str();
-	GLCall(glShaderSource(shaderID, 1, &shaderSrc, nullptr));
-	GLCall(glCompileShader(shaderID));
+	glCall(glShaderSource(shaderID, 1, &shaderSrc, nullptr));
+	glCall(glCompileShader(shaderID));
 
 	// Error handling
 	int result;
