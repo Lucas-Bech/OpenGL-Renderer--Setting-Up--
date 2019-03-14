@@ -138,6 +138,7 @@
     <ClCompile Include="definitions\indexBuffer.cpp" />
     <ClCompile Include="definitions\renderer.cpp" />
     <ClCompile Include="definitions\shader.cpp" />
+    <ClCompile Include="definitions\vertexArray.cpp" />
     <ClCompile Include="definitions\vertexBuffer.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
@@ -145,10 +146,15 @@
     <ClInclude Include="headers\indexBuffer.h" />
     <ClInclude Include="headers\renderer.h" />
     <ClInclude Include="headers\shader.h" />
+    <ClInclude Include="headers\vertexArray.h" />
     <ClInclude Include="headers\vertexBuffer.h" />
+    <ClInclude Include="headers\vertexBufferLayout.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\red.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\textures\test.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

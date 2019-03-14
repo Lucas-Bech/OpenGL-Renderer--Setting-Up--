@@ -9,6 +9,6 @@ public:
 	VertexBuffer(int size, float data[]);
 	~VertexBuffer();
 
-	void bind();
+	void bind() const;
 	void unbind();
 };

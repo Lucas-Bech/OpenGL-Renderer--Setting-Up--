@@ -11,6 +11,7 @@
 #include <indexBuffer.h>
 #include <vertexBuffer.h>
 #include <shader.h>
+#include <vertexArray.h>
 
 int main(void)
 {
@@ -50,22 +51,17 @@ int main(void)
 	};
 
 	Renderer renderer;
-
-	unsigned int vao;
-	glCall(glGenVertexArrays(1, &vao));
-	glCall(glBindVertexArray(vao));
-
+	VertexArray vao;
 	VertexBuffer vbo(sizeof(positions), positions);
+	VertexBufferLayout layout;
+	layout.push<float>(2);
+	vao.addBuffer(vbo, layout);
 	IndexBuffer ibo(indices, 6);
-	
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
-	glEnableVertexAttribArray(0);
 
-	Shader shader("res/shaders/red.shader");
+	Shader shader("resources/shaders/red.shader");
 	unsigned int shaderProgram = shader.CreateShader();
 	
 	glUseProgram(shaderProgram);
-
 	shader.setUniformLocation(shaderProgram, "u_Color");
 	
 	float r = 0.0f;
@@ -77,7 +73,6 @@ int main(void)
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		RGBA[0] = r;
-
 		shader.setUniform(RGBA);
 
 		glCall(glDrawElements(GL_TRIANGLES, sizeof(indices) / sizeof(*indices), GL_UNSIGNED_INT, nullptr));
@@ -92,9 +87,7 @@ int main(void)
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-
 	glDeleteProgram(shaderProgram);
-
 	glfwTerminate();
 	return 0;
 }
